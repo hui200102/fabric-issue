@@ -9,12 +9,13 @@ export default function CanvasComponent() {
   const handleAddGroup = () => {
     if (!canvas || group) return;
     const text = new Textbox("Hello World", {
-      height: 200,
-      width: 200,
+      height: 400,
+      width: 400,
       fill: "blue",
+      fontSize: 80,
       clipPath: new Rect({
-        height: 200,
-        width: 200,
+        height: 400,
+        width: 400,
         originX: "center",
         originY: "center",
       }),
@@ -23,15 +24,15 @@ export default function CanvasComponent() {
     const rect = new Rect({
       left: 0,
       top: 0,
-      height: 200,
-      width: 200,
+      height: 500,
+      width: 500,
       fill: "red",
     });
 
     const new_group = new Group([rect, text], {
       backgroundColor: "red",
-      height: 200,
-      width: 200,
+      height: 500,
+      width: 500,
       originX: "center",
       originY: "center",
       subTargetCheck: true,
