@@ -4,8 +4,10 @@ import { useEffect, useRef, useState } from "react";
 export default function CanvasComponent() {
   const canvasEl = useRef(null);
   const [canvas, setCanvas] = useState<Canvas>();
+  const [group, setGroup] = useState<Group>();
 
   const handleAddGroup = () => {
+    if (!canvas || group) return;
     const text = new Textbox("Hello World", {
       height: 200,
       width: 200,
@@ -26,7 +28,7 @@ export default function CanvasComponent() {
       fill: "red",
     });
 
-    const group = new Group([rect, text], {
+    const new_group = new Group([rect, text], {
       backgroundColor: "red",
       height: 200,
       width: 200,
@@ -36,7 +38,9 @@ export default function CanvasComponent() {
       clipPath: null,
     });
 
-    group.on('mousedown', (e) => {
+    setGroup(new_group);
+
+    new_group.on('mousedown', (e) => {
       const { subTargets } = e;
 
       if (subTargets && !Array.isArray(subTargets) || subTargets.length === 0) return;
@@ -44,7 +48,7 @@ export default function CanvasComponent() {
       subTargets.forEach((subTarget) => {
         if (!subTarget || !canvas || subTarget.type !== 'textbox') return;
         
-        group.remove(subTarget);
+        new_group.remove(subTarget);
         canvas.add(subTarget);
 
         subTarget.set({
@@ -55,12 +59,12 @@ export default function CanvasComponent() {
         canvas.setActiveObject(subTarget);
 
         const onDeselected = () => {
-          if (!group || !canvas) return;
+          if (!new_group || !canvas) return;
           subTarget.set({
             left: 0,
             top: 0
           });
-          group.add(subTarget);   
+          new_group.add(subTarget);   
           canvas.remove(subTarget);
           subTarget.off('deselected', onDeselected);
         };
@@ -71,7 +75,7 @@ export default function CanvasComponent() {
       canvas.renderAll();
     });
 
-    canvas.add(group);
+    canvas.add(new_group);
   };
 
   useEffect(() => {
