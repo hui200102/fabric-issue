@@ -13,6 +13,7 @@ export default function CanvasComponent() {
       width: 400,
       fill: "blue",
       fontSize: 80,
+      //If the clipPath of the Textbox is removed from the code, the bug will disapper
       clipPath: new Rect({
         height: 400,
         width: 400,
@@ -41,20 +42,21 @@ export default function CanvasComponent() {
 
     setGroup(new_group);
 
-    new_group.on('mousedown', (e) => {
+    new_group.on("mousedown", (e) => {
       const { subTargets } = e;
 
-      if (subTargets && !Array.isArray(subTargets) || subTargets.length === 0) return;
+      if ((subTargets && !Array.isArray(subTargets)) || subTargets.length === 0)
+        return;
 
       subTargets.forEach((subTarget) => {
-        if (!subTarget || !canvas || subTarget.type !== 'textbox') return;
-        
+        if (!subTarget || !canvas || subTarget.type !== "textbox") return;
+
         new_group.remove(subTarget);
         canvas.add(subTarget);
 
         subTarget.set({
           left: 0,
-          top: 0
+          top: 0,
         });
 
         canvas.setActiveObject(subTarget);
@@ -63,14 +65,14 @@ export default function CanvasComponent() {
           if (!new_group || !canvas) return;
           subTarget.set({
             left: 0,
-            top: 0
+            top: 0,
           });
-          new_group.add(subTarget);   
+          new_group.add(subTarget);
           canvas.remove(subTarget);
-          subTarget.off('deselected', onDeselected);
+          subTarget.off("deselected", onDeselected);
         };
 
-        subTarget.on('deselected', onDeselected);
+        subTarget.on("deselected", onDeselected);
       });
 
       canvas.renderAll();
@@ -84,9 +86,9 @@ export default function CanvasComponent() {
       return;
     }
     const canvas = new Canvas(canvasEl.current, {
-        // perPixelTargetFind: true,
-        backgroundColor: "white",
-        preserveObjectStacking: true
+      // perPixelTargetFind: true,
+      backgroundColor: "white",
+      preserveObjectStacking: true,
     });
 
     canvas.setHeight(window.innerHeight);
